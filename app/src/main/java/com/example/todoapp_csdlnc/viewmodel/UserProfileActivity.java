@@ -1,4 +1,6 @@
 package com.example.todoapp_csdlnc.viewmodel;
 
-public class UserProfileActivity {
+import androidx.appcompat.app.AppCompatActivity;
+
+public class UserProfileActivity extends AppCompatActivity {
 }

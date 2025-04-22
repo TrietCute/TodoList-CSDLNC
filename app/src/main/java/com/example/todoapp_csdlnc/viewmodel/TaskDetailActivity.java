@@ -1,4 +1,6 @@
 package com.example.todoapp_csdlnc.viewmodel;
 
-public class TaskDetailActivity {
+import androidx.appcompat.app.AppCompatActivity;
+
+public class TaskDetailActivity extends AppCompatActivity {
 }
