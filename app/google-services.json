@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "128648359260",
+    "project_id": "todolist-csdlnc",
+    "storage_bucket": "todolist-csdlnc.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:128648359260:android:07314d1b59a717835d2599",
+        "android_client_info": {
+          "package_name": "com.example.todoapp_csdlnc"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCFtzxmmeB18-1aiYtvka-IG1qYXi9JZs4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
