@@ -1,6 +1,7 @@
 package com.example.todoapp_csdlnc.viewmodel;
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -18,6 +19,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.example.todoapp_csdlnc.R;
+import com.example.todoapp_csdlnc.model.User;
+
+import org.w3c.dom.Text;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 public class UserProfileActivity extends AppCompatActivity {
     //Hình ảnh
@@ -46,8 +54,8 @@ public class UserProfileActivity extends AppCompatActivity {
 
 
         // Đổi tên tài khoản
-        TextView changeAccountName = findViewById(R.id.changeAccountName);
-        changeAccountName.setOnClickListener(v -> showChangeNameDialog());
+        TextView Account = findViewById(R.id.Account);
+        Account.setOnClickListener(v -> showAccountInfoDialog(new User()));
 
         // Đổi mật khẩu
         TextView changePassword = findViewById(R.id.changeAccountPassword);
@@ -64,26 +72,43 @@ public class UserProfileActivity extends AppCompatActivity {
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
     }
 
-    private void showChangeNameDialog() {
-        View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_change_name, null);
-        EditText editTextName = dialogView.findViewById(R.id.editTextName);
+    private void showAccountInfoDialog(User user) {
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_user_info, null);
+
+        TextView textId = dialogView.findViewById(R.id.textId);
+        TextView textUserName = dialogView.findViewById(R.id.textUserName);
+        TextView textEmail = dialogView.findViewById(R.id.textEmail);
+        TextView textPhone = dialogView.findViewById(R.id.textPhoneNumber);
+        TextView textBio = dialogView.findViewById(R.id.textBio);
+        TextView textCreatedAt = dialogView.findViewById(R.id.textCreatedAt);
+
+        textCreatedAt.setOnClickListener(v -> {
+            final Calendar calendar = Calendar.getInstance();
+            int year = calendar.get(Calendar.YEAR);
+            int month = calendar.get(Calendar.MONTH);
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+            DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                    (view, selectedYear, selectedMonth, selectedDay) -> {
+
+                        calendar.set(selectedYear, selectedMonth, selectedDay);
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+                        String selectedDate = sdf.format(calendar.getTime());
+
+                        textCreatedAt.setText(selectedDate);
+                    }, year, month, day);
+
+            datePickerDialog.show();
+        });
+
 
         new AlertDialog.Builder(this)
-                .setTitle("Change Account Name")
+                .setTitle("Account Information")
                 .setView(dialogView)
-                .setPositiveButton("Save", (dialog, which) -> {
-                    String newName = editTextName.getText().toString().trim();
-                    if (!newName.isEmpty()) {
-                        nameProfile.setText(newName);
-                        Toast.makeText(this, "Name updated", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(this, "Please enter a name", Toast.LENGTH_SHORT).show();
-                    }
-                })
+                .setPositiveButton("Save", null)
                 .setNegativeButton("Cancel", null)
                 .show();
     }
-
     private void showChangePasswordDialog() {
         View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_change_password, null);
         EditText oldPassword = dialogView.findViewById(R.id.oldPassword);

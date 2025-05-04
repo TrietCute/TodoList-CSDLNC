@@ -41,7 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="left"
         android:layout_marginTop="40dp"
-        android:text="Username"
+        android:text="Email"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
@@ -52,7 +52,7 @@
         android:layout_gravity="left"
         android:layout_marginTop="10dp"
         android:background="@drawable/edit_text_box"
-        android:hint="Username"
+        android:hint="Email"
         android:inputType="textEmailAddress"
         android:padding="10dp"
         app:layout_constraintStart_toStartOf="parent"

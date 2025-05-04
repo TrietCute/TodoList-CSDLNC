@@ -89,31 +89,12 @@ public class TaskDetailActivity extends AppCompatActivity {
 
                     // Hiển thị thời gian đã chọn trên textViewTime
                     textViewTime.setText(formattedTime);
-
-                    // Mở AlertDialog để chọn nhắc nhở
-                    openReminderOptions(selectedHour, selectedMinute);
                 }, hour, minute, true);
 
         timePickerDialog.show();
     }
 
-    private void openReminderOptions(int hour, int minute) {
-        // Các lựa chọn nhắc nhở (hàng ngày, hàng tuần)
-        String[] reminderOptions = {"Daily", "Weekly", "No"};
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Set Reminder")
-                .setItems(reminderOptions, (dialog, which) -> {
-                    String selectedOption = reminderOptions[which];
-                    Toast.makeText(this, "Reminder set to: " + selectedOption, Toast.LENGTH_SHORT).show();
-
-                    // Bạn có thể lưu lại thời gian và nhắc nhở ở đây nếu cần
-                })
-                .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
-
-        // Hiển thị dialog
-        builder.show();
-    }
 
     private void openNoteDialog() {
         // Tạo một AlertDialog với EditText cho người dùng nhập ghi chú
