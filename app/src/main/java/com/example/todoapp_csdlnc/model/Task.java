@@ -1,45 +1,28 @@
 package com.example.todoapp_csdlnc.model;
 
-import com.google.type.DateTime;
-import java.util.ArrayList;
+import java.io.Serializable;
 
-public class Task {
-    private String id;
+public class Task implements Serializable {
     private String name;
     private String description;
     private String deadline;
-    //private String priority;
-    private boolean isCompleted;
-    ArrayList<RelatedPerson> relatedPersons;
-    private DateTime createdAt;
+    private String relatedPersons;
+
     public Task() {}
 
-    public String getId() {
-        return id;
+    public Task(String name, String description, String deadline, String relatedPersons) {
+        this.name = name;
+        this.description = description;
+        this.deadline = deadline;
+        this.relatedPersons = relatedPersons;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public String getDeadline() {
-        return deadline;
-    }
-
-    public boolean isCompleted() {
-        return isCompleted;
-    }
-
-    public ArrayList<RelatedPerson> getRelatedPersons() {
-        return relatedPersons;
-    }
-
-    public DateTime getCreatedAt() {
-        return createdAt;
-    }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+    public String getDeadline() { return deadline; }
+    public void setDeadline(String deadline) { this.deadline = deadline; }
+    public String getRelatedPersons() { return relatedPersons; }
+    public void setRelatedPersons(String relatedPersons) { this.relatedPersons = relatedPersons; }
 }
-

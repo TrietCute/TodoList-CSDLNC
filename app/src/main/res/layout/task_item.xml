@@ -1,0 +1,81 @@
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="12dp"
+    app:cardBackgroundColor="@android:color/white"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="2dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="24dp">
+
+        <!-- Checkbox -->
+        <CheckBox
+            android:id="@+id/task_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="32dp"
+            android:minHeight="32dp"
+            android:buttonTint="@color/green"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Task Title -->
+        <TextView
+            android:id="@+id/task_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:text="Task Name"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@id/task_checkbox"
+            app:layout_constraintEnd_toStartOf="@id/edit_button"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Task Time -->
+        <TextView
+            android:id="@+id/task_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginTop="6dp"
+            android:text="12:00 PM"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="18sp"
+            app:layout_constraintStart_toEndOf="@id/task_checkbox"
+            app:layout_constraintEnd_toStartOf="@id/edit_button"
+            app:layout_constraintTop_toBottomOf="@id/task_title" />
+
+        <!-- Edit Button -->
+        <ImageButton
+            android:id="@+id/edit_button"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Edit Task"
+            android:src="@drawable/edit"
+            android:scaleType="centerInside"
+            app:layout_constraintEnd_toStartOf="@id/delete_button"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Delete Button -->
+        <ImageButton
+            android:id="@+id/delete_button"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Delete Task"
+            android:src="@drawable/delete"
+            android:scaleType="centerInside"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
