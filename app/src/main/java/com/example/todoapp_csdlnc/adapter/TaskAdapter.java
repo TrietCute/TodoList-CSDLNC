@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.todoapp_csdlnc.R;
 import com.example.todoapp_csdlnc.model.Task;
+import com.example.todoapp_csdlnc.viewmodel.TaskDetailActivity;
 import com.example.todoapp_csdlnc.viewmodel.UpdateTaskActivity;
 import java.util.ArrayList;
 
@@ -42,6 +43,12 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         holder.taskTime.setText(task.getDeadline());
         holder.taskCheckbox.setChecked(false); // Mặc định chưa chọn
 
+        // Handle task item click
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(holder.itemView.getContext(), TaskDetailActivity.class);
+            intent.putExtra("task", task);
+            holder.itemView.getContext().startActivity(intent);
+        });
         // Handle edit button click
         holder.editButton.setOnClickListener(v -> {
             Intent intent = new Intent(holder.itemView.getContext(), UpdateTaskActivity.class);

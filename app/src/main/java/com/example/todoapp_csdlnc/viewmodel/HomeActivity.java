@@ -15,6 +15,8 @@ import com.example.todoapp_csdlnc.R;
 import com.example.todoapp_csdlnc.adapter.TaskAdapter;
 import com.example.todoapp_csdlnc.model.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.imageview.ShapeableImageView;
+
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -67,6 +69,12 @@ public class HomeActivity extends AppCompatActivity implements TaskAdapter.OnTas
         // Thiết lập Sort Icon
         ImageView sortIcon = findViewById(R.id.sort_icon);
         sortIcon.setOnClickListener(v -> showSortDialog());
+
+        ShapeableImageView avatar = findViewById(R.id.avatar);
+        avatar.setOnClickListener(v -> {
+            Intent intent = new Intent(HomeActivity.this, UserProfileActivity.class);
+            startActivity(intent);
+        });
     }
 
     private void showSortDialog() {

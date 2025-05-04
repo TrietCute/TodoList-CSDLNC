@@ -12,13 +12,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TodoAppCSDLNC"
         tools:targetApi="31">
-        <activity android:name=".viewmodel.HomeActivity" />
+        <activity android:name=".viewmodel.LoginActivity" />
         <activity android:name=".viewmodel.AddTaskActivity" />
         <activity android:name=".viewmodel.TaskDetailActivity" />
         <activity android:name=".viewmodel.UpdateTaskActivity" />
         <activity android:name=".viewmodel.UserProfileActivity" />
+        <activity android:name=".viewmodel.RegisterActivity"/>
         <activity
-            android:name=".viewmodel.LoginActivity"
+            android:name=".viewmodel.HomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
