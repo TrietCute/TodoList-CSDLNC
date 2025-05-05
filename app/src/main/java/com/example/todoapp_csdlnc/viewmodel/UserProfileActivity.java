@@ -41,6 +41,10 @@ public class UserProfileActivity extends AppCompatActivity {
 
         nameProfile = findViewById(R.id.nameProfile);
 
+        // Initialize back button
+        ImageButton backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(v -> finish());
+
         //Đổi hình ảnh
         imageButton = findViewById(R.id.imageButton);
         ImageButton editIcon = findViewById(R.id.editIcon);

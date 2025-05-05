@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -40,7 +41,9 @@ public class TaskDetailActivity extends AppCompatActivity {
         textViewNotes = findViewById(R.id.textView16);
         textViewNoteContent = findViewById(R.id.textViewNoteContent);
 
-
+        // Initialize back button
+        ImageButton backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(v -> finish());
         // Lắng nghe sự kiện click vào các TextView
         View.OnClickListener dateClickListener = v -> openDatePicker();
         textViewDate.setOnClickListener(dateClickListener);
