@@ -78,7 +78,7 @@ public class HomeActivity extends AppCompatActivity implements TaskAdapter.OnTas
     }
 
     private void showSortDialog() {
-        String[] sortOptions = {"Sort by Nearest Deadline", "Sort by Farthest Deadline"};
+        String[] sortOptions = {"Sort by Earliest Deadline", "Sort by Latest Deadline"};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Sort Tasks")
                 .setSingleChoiceItems(sortOptions, -1, (dialog, which) -> {
