@@ -8,12 +8,17 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.todoapp_csdlnc.R;
 import com.example.todoapp_csdlnc.model.Task;
 import com.example.todoapp_csdlnc.viewmodel.TaskDetailActivity;
 import com.example.todoapp_csdlnc.viewmodel.UpdateTaskActivity;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
@@ -41,37 +46,65 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         Task task = taskList.get(position);
         holder.taskTitle.setText(task.getName());
         holder.taskTime.setText(task.getDeadline());
-        holder.taskCheckbox.setChecked(false); // Mặc định chưa chọn
+        holder.taskCheckbox.setChecked(task.isCompleted()); // Mặc định chưa chọn
 
         // Handle task item click
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(holder.itemView.getContext(), TaskDetailActivity.class);
-            intent.putExtra("task", task);
-            holder.itemView.getContext().startActivity(intent);
-        });
-        // Handle edit button click
-        holder.editButton.setOnClickListener(v -> {
-            Intent intent = new Intent(holder.itemView.getContext(), UpdateTaskActivity.class);
-            intent.putExtra("task", task);
-            intent.putExtra("position", position);
+            intent.putExtra("id", task.getId());
             holder.itemView.getContext().startActivity(intent);
         });
 
-        // Handle delete button click
+        // Handle edit button click
+        holder.editButton.setOnClickListener(v -> {
+            Intent intent = new Intent(holder.itemView.getContext(), UpdateTaskActivity.class);
+            intent.putExtra("id", task.getId());
+            holder.itemView.getContext().startActivity(intent);
+        });
+
+        // Handle delete (xóa luôn trên Firestore)
         holder.deleteButton.setOnClickListener(v -> {
             new AlertDialog.Builder(holder.itemView.getContext())
                     .setTitle("Xóa Task")
                     .setMessage("Bạn có chắc muốn xóa task này?")
                     .setPositiveButton("Xóa", (dialog, which) -> {
-                        taskList.remove(position);
-                        notifyItemRemoved(position);
-                        notifyItemRangeChanged(position, taskList.size());
-                        if (deleteListener != null) {
-                            deleteListener.onTaskDeleted();
-                        }
+                        String taskId = task.getId();
+                        FirebaseFirestore.getInstance().collection("Task")
+                                .document(taskId)
+                                .delete()
+                                .addOnSuccessListener(aVoid -> {
+                                    taskList.remove(position);
+                                    notifyItemRemoved(position);
+                                    notifyItemRangeChanged(position, taskList.size());
+                                    Toast.makeText(holder.itemView.getContext(), "Đã xóa task", Toast.LENGTH_SHORT).show();
+                                    if (deleteListener != null) deleteListener.onTaskDeleted();
+                                })
+                                .addOnFailureListener(e -> {
+                                    Toast.makeText(holder.itemView.getContext(), "Xóa thất bại", Toast.LENGTH_SHORT).show();
+                                });
                     })
                     .setNegativeButton("Hủy", null)
                     .show();
+        });
+
+        // Remove listener trước khi setChecked để tránh callback không mong muốn
+        holder.taskCheckbox.setOnCheckedChangeListener(null);
+        holder.taskCheckbox.setChecked(task.isCompleted());
+
+        // Gắn listener mới
+        holder.taskCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            FirebaseFirestore.getInstance()
+                    .collection("Task")
+                    .document(task.getId())
+                    .update("isCompleted", isChecked)
+                    .addOnSuccessListener(aVoid -> {
+                        task.setCompleted(isChecked);
+                        Toast.makeText(holder.itemView.getContext(), "Cập nhật trạng thái thành công", Toast.LENGTH_SHORT).show();
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(holder.itemView.getContext(), "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
+                        holder.taskCheckbox.setChecked(task.isCompleted());
+                    });
         });
     }
 
@@ -84,7 +117,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         TextView taskTitle, taskTime;
         CheckBox taskCheckbox;
         ImageButton editButton, deleteButton;
-
         public TaskViewHolder(@NonNull View itemView) {
             super(itemView);
             taskTitle = itemView.findViewById(R.id.task_title);

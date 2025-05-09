@@ -87,11 +87,11 @@
         android:id="@+id/btnLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="248dp"
         android:text="Log in"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <LinearLayout
@@ -99,6 +99,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_marginBottom="200dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -109,15 +110,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Don't have an account?"
-            android:textColor="@color/ghost" />
+            android:textColor="@color/ghost"
+            tools:layout_editor_absoluteX="97dp"
+            tools:layout_editor_absoluteY="558dp" />
 
         <TextView
             android:id="@+id/Register_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=" Register"
+            android:textColor="@color/black"
             android:textStyle="bold"
-            android:textColor="@color/black" />
+            tools:layout_editor_absoluteX="239dp"
+            tools:layout_editor_absoluteY="558dp" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

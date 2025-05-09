@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:padding="20dp">
 
-    <EditText
+    <TextView
         android:id="@+id/textId"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,6 +24,7 @@
         android:layout_height="wrap_content"
         android:hint="Email"
         android:layout_marginTop="16dp"/>
+
     <EditText
         android:id="@+id/textPhoneNumber"
         android:layout_width="match_parent"
@@ -38,14 +39,12 @@
         android:hint="Bio"
         android:layout_marginTop="16dp" />
 
-    <EditText
+    <TextView
         android:id="@+id/textCreatedAt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Time created"
-        android:layout_marginTop="16dp"
         android:focusable="false"
-        android:clickable="true"
-        android:drawableRight="@drawable/outline_calendar_month_24"
+        android:layout_marginTop="16dp"
         android:drawableTint="@color/ghost"/>
 </LinearLayout>

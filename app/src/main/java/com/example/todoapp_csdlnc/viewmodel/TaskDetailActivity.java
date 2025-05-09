@@ -15,19 +15,21 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.todoapp_csdlnc.R;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Source;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
+import java.util.Map;
 
 public class TaskDetailActivity extends AppCompatActivity {
-
-    private TextView textViewDate;  // TextView hiển thị ngày Due Date
-    private TextView textView12;    // TextView khác (bên cạnh textViewDate)
-    private TextView textViewTime;  // TextView "Time and Remind"
-    private TextView textViewNotes; // TextView "Notes"
-
+private TextView textViewName;
+    private TextView textViewDate;
+    private TextView textViewStatus;
+    private TextView textViewRelatedPerson;
     private TextView textViewNoteContent;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,89 +37,60 @@ public class TaskDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_task_detail);
 
         // Khởi tạo các TextView
+        textViewName = findViewById(R.id.nameTask);
         textViewDate = findViewById(R.id.textViewDate);
-        textView12 = findViewById(R.id.textView12);
-        textViewTime = findViewById(R.id.textView13);
-        textViewNotes = findViewById(R.id.textView16);
+        textViewStatus = findViewById(R.id.textViewStatus);
+        textViewRelatedPerson = findViewById(R.id.textViewRelatedPerson);
         textViewNoteContent = findViewById(R.id.textViewNoteContent);
+
 
         // Initialize back button
         ImageButton backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(v -> finish());
-        // Lắng nghe sự kiện click vào các TextView
-        View.OnClickListener dateClickListener = v -> openDatePicker();
-        textViewDate.setOnClickListener(dateClickListener);
-        textView12.setOnClickListener(dateClickListener);
 
-        // Lắng nghe sự kiện click vào "Time and Remind"
-        textViewTime.setOnClickListener(v -> openTimePickerDialog());
-
-        // Lắng nghe sự kiện click vào "Notes"
-        textViewNotes.setOnClickListener(v -> openNoteDialog());
+        // Lấy taskId từ Intent
+        String taskId = getIntent().getStringExtra("id");
+        if (taskId != null) {
+            loadTaskDetail(taskId);
+        } else {
+            Toast.makeText(this, "Không tìm thấy ID công việc", Toast.LENGTH_SHORT).show();
+        }
     }
 
-    private void openDatePicker() {
-        // Mở DatePickerDialog (giống như mã trước đây của bạn)
-        Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
+    private void loadTaskDetail(String taskId) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference taskRef = db.collection("Task").document(taskId);
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
-                (view, selectedYear, selectedMonth, selectedDay) -> {
-                    Calendar selectedDate = Calendar.getInstance();
-                    selectedDate.set(selectedYear, selectedMonth, selectedDay);
+        taskRef.get().addOnSuccessListener(documentSnapshot -> {
+            if (documentSnapshot.exists()) {
+                String name = documentSnapshot.getString("Name");
+                String deadline = documentSnapshot.getString("Deadline");
+                String description = documentSnapshot.getString("Description");
+                Boolean isCompleted = documentSnapshot.getBoolean("isCompleted");
 
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-                    String formattedDate = sdf.format(selectedDate.getTime());
+                textViewName.setText(name != null ? name : "Không có tên");
+                textViewDate.setText(deadline != null ? deadline : "Không có hạn chót");
+                textViewNoteContent.setText(description != null ? description : "Không có ghi chú");
+                textViewStatus.setText(isCompleted != null && isCompleted ? "Đã hoàn thành" : "Chưa hoàn thành");
 
-                    textViewDate.setText(formattedDate);
-                    Toast.makeText(this, "Date selected: " + formattedDate, Toast.LENGTH_SHORT).show();
-                }, year, month, day);
+                // Hiển thị tên các người liên quan
+                List<Map<String, Object>> relatedList = (List<Map<String, Object>>) documentSnapshot.get("relatedPerson");
+                if (relatedList != null && !relatedList.isEmpty()) {
+                    StringBuilder namesBuilder = new StringBuilder();
+                    for (Map<String, Object> person : relatedList) {
+                        String personName = (String) person.get("name");
+                        if (personName != null) {
+                            namesBuilder.append("- ").append(personName).append("\n");
+                        }
+                    }
 
-        datePickerDialog.show();
-    }
-
-    private void openTimePickerDialog() {
-        // Lấy thời gian hiện tại
-        Calendar calendar = Calendar.getInstance();
-        int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        int minute = calendar.get(Calendar.MINUTE);
-
-        // Mở TimePickerDialog
-        TimePickerDialog timePickerDialog = new TimePickerDialog(this,
-                (TimePicker view, int selectedHour, int selectedMinute) -> {
-                    // Định dạng thời gian
-                    String formattedTime = String.format("%02d:%02d", selectedHour, selectedMinute);
-
-                    // Hiển thị thời gian đã chọn trên textViewTime
-                    textViewTime.setText(formattedTime);
-                }, hour, minute, true);
-
-        timePickerDialog.show();
-    }
-
-
-
-    private void openNoteDialog() {
-        // Tạo một AlertDialog với EditText cho người dùng nhập ghi chú
-        LayoutInflater inflater = getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.dialog_edit_note, null);
-
-        EditText editTextNote = dialogView.findViewById(R.id.editNote);
-
-        // Tạo AlertDialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Enter Note")
-                .setView(dialogView)
-                .setPositiveButton("Save", (dialog, which) -> {
-                    String note = editTextNote.getText().toString();
-                    textViewNoteContent.setText(note); // Ghi vào TextView mới
-                    Toast.makeText(this, "Note saved", Toast.LENGTH_SHORT).show();
-                })
-                .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
-
-        // Hiển thị dialog
-        builder.show();
+                    textViewRelatedPerson.setText(namesBuilder.toString().trim());
+                }
+            } else {
+                Toast.makeText(this, "Không tìm thấy công việc", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(e ->
+                Toast.makeText(this, "Lỗi tải dữ liệu: " + e.getMessage(), Toast.LENGTH_SHORT).show()
+        );
     }
 }

@@ -1,5 +1,6 @@
 package com.example.todoapp_csdlnc.model;
 
+import com.google.firebase.Timestamp;
 import com.google.type.DateTime;
 
 public class User {
@@ -10,7 +11,7 @@ public class User {
     private String phoneNumber;
     private String avatarUrl;
     private String bio;
-    private DateTime createdAt;
+    private Timestamp createdAt;
     public User() {}
     public String getId() {
         return id;
@@ -33,7 +34,7 @@ public class User {
     public String getAvatarUrl() {
         return avatarUrl;
     }
-    public DateTime getCreatedAt() {
+    public Timestamp getCreatedAt() {
         return createdAt;
     }
 }

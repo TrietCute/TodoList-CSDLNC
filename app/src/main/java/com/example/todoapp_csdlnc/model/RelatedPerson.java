@@ -5,7 +5,12 @@ public class RelatedPerson {
     private String name;
     private String phoneNumber;
 
-    public RelatedPerson() {}
+    public RelatedPerson(){}
+    public RelatedPerson(String id, String name, String phoneNumber) {
+        this.id = id;
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+    }
 
     public String getId() {
         return id;

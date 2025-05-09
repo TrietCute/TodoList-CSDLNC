@@ -12,15 +12,16 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.todoapp_csdlnc.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class LoginActivity extends AppCompatActivity {
     private FirebaseFirestore db;
+    private FirebaseAuth auth;
     private EditText txtEmail, txtPassword;
     private Button btnLogin;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +32,7 @@ public class LoginActivity extends AppCompatActivity {
         txtPassword = findViewById(R.id.txtPassword);
         btnLogin = findViewById(R.id.btnLogin);
 
+        auth = FirebaseAuth.getInstance();
         btnLogin.setOnClickListener(v -> checkLogin());
 
         //Xử lý sự kiện Register
@@ -65,6 +67,13 @@ public class LoginActivity extends AppCompatActivity {
                     if (!queryDocumentSnapshots.isEmpty()) {
                         // Đăng nhập thành công
                         DocumentSnapshot userDoc = queryDocumentSnapshots.getDocuments().get(0);
+
+                        String uid = userDoc.getId();
+                        // ✅ Lưu uid vào SharedPreferences
+                        getSharedPreferences("UserPrefs", MODE_PRIVATE)
+                                .edit()
+                                .putString("uid", uid)
+                                .apply();
 
                         Toast.makeText(this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
 

@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "128648359260",
+    "firebase_url": "https://todolist-csdlnc-default-rtdb.firebaseio.com",
     "project_id": "todolist-csdlnc",
     "storage_bucket": "todolist-csdlnc.firebasestorage.app"
   },
