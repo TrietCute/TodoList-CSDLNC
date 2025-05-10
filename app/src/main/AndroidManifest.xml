@@ -19,6 +19,7 @@
         <activity android:name=".viewmodel.UpdateTaskActivity" />
         <activity android:name=".viewmodel.UserProfileActivity" />
         <activity android:name=".viewmodel.RegisterActivity"/>
+        <activity android:name=".viewmodel.RegisterInfoActivity" />
         <activity
             android:name=".viewmodel.LoginActivity"
             android:exported="true">
