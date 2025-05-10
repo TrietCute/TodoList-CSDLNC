@@ -46,7 +46,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         Task task = taskList.get(position);
         holder.taskTitle.setText(task.getName());
         holder.taskTime.setText(task.getDeadline());
-        holder.taskCheckbox.setChecked(task.isCompleted()); // Mặc định chưa chọn
 
         // Handle task item click
         holder.itemView.setOnClickListener(v -> {
@@ -62,7 +61,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             holder.itemView.getContext().startActivity(intent);
         });
 
-        // Handle delete (xóa luôn trên Firestore)
+        // Handle delete
         holder.deleteButton.setOnClickListener(v -> {
             new AlertDialog.Builder(holder.itemView.getContext())
                     .setTitle("Xóa Task")
